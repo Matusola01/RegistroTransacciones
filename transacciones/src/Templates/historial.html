@@ -1,0 +1,34 @@
+<!-- templates/historial.html -->
+{% extends 'base.html' %} {% block title %}Historial{% endblock %} {% block content %}
+<h1>Historial de Transacciones</h1>
+<form method="GET">
+	<label for="filtro">Filtrar por Divisa:</label>
+	<input type="text" id="filtro" name="filtro" />
+	<button type="submit">Filtrar</button>
+</form>
+
+<table>
+	<thead>
+		<tr>
+			<th>Nombre</th>
+			<th>Compra</th>
+			<th>Venta</th>
+			<th>Divisa</th>
+			<th>Fecha</th>
+			<th>Moneda</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for transaccion in transacciones %}
+		<tr>
+			<td>{{ transaccion.nombre_comprador }}</td>
+			<td>{{ transaccion.precio_compra }}</td>
+			<td>{{ transaccion.precio_venta }}</td>
+			<td>{{ transaccion.divisa }}</td>
+			<td>{{ transaccion.fecha }}</td>
+			<td>{{ transaccion.moneda }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
