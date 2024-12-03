@@ -1,36 +1,18 @@
 # app.py
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from .config import SQLALCHEMY_DATABASE_URI
+from .config import SQLALCHEMY_DATABASE_URI, DEFAULT_USERNAME, DEFAULT_PASSWORD, SECRET_KEY
 from .models import db, Transaccion
 from flask import jsonify
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = SECRET_KEY
 db.init_app(app)
 
 # Ruta para formulario
 @app.route('/registrar', methods=['GET', 'POST'])
-# def registrar():
-#     if request.method == 'POST':
-#         nombre = request.form['nombre_comprador']
-#         precio_compra = float(request.form['precio_compra'])
-#         precio_venta = float(request.form['precio_venta'])
-#         divisa = request.form['divisa']
-
-#         nueva_transaccion = Transaccion(
-#             nombre_comprador=nombre,
-#             precio_compra=precio_compra,
-#             precio_venta=precio_venta,
-#             divisa=divisa
-#         )
-#         db.session.add(nueva_transaccion)
-#         db.session.commit()
-#         return redirect(url_for('historial'))
-
-#     return render_template('formulario.html')
 def registrar():
     if request.method == 'POST':
         nombre = request.form['nombre_comprador']
@@ -65,13 +47,6 @@ def historial():
 
 # Ruta para el balance 
 @app.route('/datos_balance', methods=['GET'])
-# def datos_balance():
-#     transacciones = Transaccion.query.order_by(Transaccion.fecha).all()
-#     datos = {
-#         "fechas": [t.fecha.strftime('%Y-%m-%d %H:%M:%S') for t in transacciones],
-#         "ganancias_perdidas": [t.precio_venta - t.precio_compra for t in transacciones],
-#     }
-#     return jsonify(datos)
 def datos_balance():
     # Obtener todas las transacciones
     transacciones = Transaccion.query.order_by(Transaccion.fecha).all()
@@ -101,26 +76,7 @@ def datos_balance():
     # Retornar los datos como JSON
     return jsonify(datos_por_moneda)
 
-# @app.route('/balance', methods=['GET'])
-# def balance():
-#     # Obtener todas las transacciones
-#     transacciones = Transaccion.query.all()
-    
-#     # Calcular ganancias/pérdidas por transacción y el total
-#     balance_detallado = []
-#     total_balance = 0
 
-#     for transaccion in transacciones:
-#         diferencia = transaccion.precio_venta - transaccion.precio_compra
-#         total_balance += diferencia
-#         balance_detallado.append({
-#             'nombre': transaccion.nombre_comprador,
-#             'divisa': transaccion.divisa,
-#             'diferencia': diferencia,
-#             'fecha': transaccion.fecha
-#         })
-
-#     return render_template('balance.html', balance_detallado=balance_detallado, total_balance=total_balance)
 @app.route('/balance', methods=['GET'])
 def balance():
     # Obtener todas las transacciones
@@ -143,7 +99,38 @@ def balance():
 
     return render_template('balance.html', balance_detallado=balance_detallado, balance_por_moneda=balance_por_moneda)
 
+# Decorador para rutas protegidas
+def login_required(f):
+    def wrapper(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    wrapper.__name__ = f.__name__
+    return wrapper
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == DEFAULT_USERNAME and password == DEFAULT_PASSWORD:
+            session['logged_in'] = True
+            return redirect(url_for('home'))
+        else:
+            flash('Usuario o contraseña incorrectos.', 'error')
+
+    return render_template('login.html')
+
+@app.route('/')
+@login_required
+def home():
+    return render_template('index.html')
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 @app.before_request
 def inicializar_bd():

@@ -1,6 +1,8 @@
 body {
+	margin: 0;
+	padding: 0;
 	font-family: Arial, sans-serif;
-	margin: 20px;
+	background-color: #f4f4f9;
 }
 
 nav a {
@@ -40,4 +42,58 @@ td {
 
 .negativo {
 	color: red;
+}
+
+.login-container {
+	max-width: 400px;
+	margin: 100px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	text-align: center;
+}
+h1 {
+	color: #333;
+	margin-bottom: 20px;
+}
+.login-form label {
+	display: block;
+	text-align: left;
+	font-weight: bold;
+	margin: 10px 0 5px;
+	color: #555;
+}
+
+.login-form input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+/* Botón principal */
+.btn-primary {
+	width: 100%;
+	padding: 10px;
+	background-color: #007bff;
+	border: none;
+	color: white;
+	font-size: 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+	background-color: #0056b3;
+}
+
+/* Mensajes de error */
+.error-messages p {
+	color: red;
+	font-weight: bold;
+	margin: 0 0 10px;
 }
