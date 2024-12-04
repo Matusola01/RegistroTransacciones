@@ -1,5 +1,3 @@
-transacciones.db
-
-config.py
+.env
 
 __pycache__/
