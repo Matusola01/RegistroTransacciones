@@ -1,8 +1,8 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from transacciones.src.config import SQLALCHEMY_DATABASE_URI, DEFAULT_USERNAME, DEFAULT_PASSWORD, SECRET_KEY
-from transacciones.src.models import db, Transaccion
+from .config import SQLALCHEMY_DATABASE_URI, DEFAULT_USERNAME, DEFAULT_PASSWORD, SECRET_KEY
+from .models import db, Transaccion
 from flask import jsonify
 
 app = Flask(__name__)
