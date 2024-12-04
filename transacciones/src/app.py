@@ -5,7 +5,7 @@ from .config import SQLALCHEMY_DATABASE_URI, DEFAULT_USERNAME, DEFAULT_PASSWORD,
 from .models import db, Transaccion
 from flask import jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
