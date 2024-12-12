@@ -8,14 +8,19 @@
 		<title>{% block title %}Transacciones{% endblock %}</title>
 	</head>
 	<body>
-		<nav>
-			<a href="{{ url_for('registrar') }}">Registrar Transacción</a> |
-			<a href="{{ url_for('historial') }}">Historial</a>
-			<a href="{{ url_for('balance') }}">Balance</a>
-			<a href="{{ url_for('home') }}">Inicio</a>
-			<form action="{{ url_for('logout') }}" method="POST" style="display: inline">
-				<button type="submit" class="btn-secondary">Salir</button>
-			</form>
+		<nav class="navbar">
+			<div class="navbar-brand">
+				<a href="{{ url_for('home') }}">Transacciones</a>
+			</div>
+			<div class="navbar-links">
+				<a href="{{ url_for('registrar') }}">Registrar Transacción</a> |
+				<a href="{{ url_for('historial') }}">Historial</a>
+				<a href="{{ url_for('balance') }}">Balance</a>
+				<a href="{{ url_for('home') }}">Inicio</a>
+				<form action="{{ url_for('logout') }}" method="POST" style="display: inline">
+					<button type="submit" class="btn-secondary">Salir</button>
+				</form>
+			</div>
 		</nav>
 		<div class="content">{% block content %}{% endblock %}</div>
 	</body>

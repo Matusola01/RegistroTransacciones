@@ -48,45 +48,6 @@
 </table>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- <script>
-	async function cargarGraficoBalance() {
-		const response = await fetch('/datos_balance');
-		const data = await response.json();
-
-		const ctx = document.getElementById('graficoBalance').getContext('2d');
-		new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: data.fechas,
-				datasets: [
-					{
-						label: 'Ganancias/Pérdidas',
-						data: data.ganancias_perdidas,
-						backgroundColor: data.ganancias_perdidas.map(value =>
-							value >= 0 ? 'rgba(75, 192, 192, 0.7)' : 'rgba(255, 99, 132, 0.7)'
-						),
-						borderColor: data.ganancias_perdidas.map(value =>
-							value >= 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'
-						),
-						borderWidth: 1,
-					},
-				],
-			},
-			options: {
-				responsive: true,
-				plugins: {
-					legend: { display: true, position: 'top' },
-					title: { display: true, text: 'Evolución de Ganancias/Pérdidas' },
-				},
-				scales: {
-					x: { title: { display: true, text: 'Fechas' } },
-					y: { title: { display: true, text: 'Ganancias/Pérdidas ($)' } },
-				},
-			},
-		});
-	}
-	cargarGraficoBalance();
-</script> -->
 <script>
 	async function cargarGraficoBalance() {
 		const response = await fetch('/datos_balance');
