@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+	<h2>Registrar Transacción</h2>
+	<form method="POST" action="{{ url_for('transactions') }}" class="form-container">
+		<label for="tipo">Tipo:</label>
+		<select name="tipo" id="tipo" onchange="updateForm()" required>
+			<option value="compra">Compra</option>
+			<option value="venta">Venta</option>
+		</select>
+
+		<label for="monto" id="montoLabel">Monto en Pesos:</label>
+		<input type="number" name="monto" id="monto" step="0.01" required />
+
+		<label for="concepto">Concepto:</label>
+		<input type="text" name="concepto" required />
+
+		<label for="calculo">Calcular usando:</label>
+		<select name="calculo" id="calculo" onchange="toggleCustomFields()" required>
+			<option value="dolar_blue">Dólar Blue</option>
+			<option value="valores_personalizados">Valores Personalizados</option>
+		</select>
+
+		<div id="customFields" style="display: none">
+			<label for="precio_compra">Precio de Compra (Personalizado):</label>
+			<input type="number" name="precio_compra" step="0.01" id="precio_compra" />
+
+			<label for="precio_venta">Precio de Venta (Personalizado):</label>
+			<input type="number" name="precio_venta" step="0.01" id="precio_venta" />
+		</div>
+
+		<button type="submit" class="btn-primary">Registrar</button>
+	</form>
+</div>
+
+<script>
+	function updateForm() {
+		const tipo = document.getElementById('tipo').value;
+		const montoLabel = document.getElementById('montoLabel');
+		const montoInput = document.getElementById('monto');
+
+		if (tipo === 'compra') {
+			montoLabel.textContent = 'Monto en Pesos:';
+			montoInput.placeholder = 'Ingrese el monto en pesos';
+		} else if (tipo === 'venta') {
+			montoLabel.textContent = 'Monto en Dólares:';
+			montoInput.placeholder = 'Ingrese el monto en dólares';
+		}
+	}
+
+	function toggleCustomFields() {
+		const calculo = document.getElementById('calculo').value;
+		const customFields = document.getElementById('customFields');
+
+		if (calculo === 'valores_personalizados') {
+			customFields.style.display = 'block';
+		} else {
+			customFields.style.display = 'none';
+		}
+	}
+
+	updateForm();
+	toggleCustomFields();
+</script>
+{% endblock %}

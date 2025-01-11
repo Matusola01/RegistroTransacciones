@@ -1,16 +1,18 @@
-# models.py
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 db = SQLAlchemy()
 
-class Transaccion(db.Model):
-    __tablename__ = 'transacciones'
-
+class Caja(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nombre_comprador = db.Column(db.String(100), nullable=False)
-    precio_compra = db.Column(db.Float, nullable=False)
-    precio_venta = db.Column(db.Float, nullable=False)
-    divisa = db.Column(db.String(50), nullable=False)
-    moneda = db.Column(db.String(10), nullable=False)  # Nueva columna para registrar la moneda (USD/ARS)
-    fecha = db.Column(db.DateTime, default=datetime.utcnow)
+    pesos = db.Column(db.Float, nullable=False)  # Saldo en pesos
+    dolares = db.Column(db.Float, nullable=False)  # Saldo en dólares
+    fecha_hora = db.Column(db.DateTime, nullable=False)  # Fecha y hora de configuración
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tipo = db.Column(db.String(10), nullable=False)  # "compra" o "venta"
+    monto = db.Column(db.Float, nullable=False)
+    concepto = db.Column(db.String(255), nullable=True)
+    fecha_hora = db.Column(db.DateTime, nullable=False)
+    tasa_cambio = db.Column(db.Float, nullable=False)  # Tipo de cambio

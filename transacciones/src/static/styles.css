@@ -1,251 +1,304 @@
+/* General Styles */
 body {
+	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
 	background-color: #f4f4f9;
+	color: #333;
 }
 
-nav a {
-	margin: 0 10px;
+h1,
+h2,
+h3 {
+	text-align: center;
+	color: #4caf50;
+	margin-top: 1rem;
+}
+
+p,
+label {
+	font-size: 1rem;
+}
+
+main {
+	padding: 2rem;
+}
+
+/* Header Styles */
+header {
+	background-color: #4caf50;
+	color: white;
+	padding: 1rem;
+	text-align: center;
+}
+
+header nav {
+	margin-top: 1rem;
+}
+
+header nav a {
+	color: white;
 	text-decoration: none;
-	color: #007bff;
+	margin: 0 1rem;
+	font-weight: bold;
 }
 
+header nav a:hover {
+	text-decoration: underline;
+}
+
+header nav form {
+	display: inline;
+	margin-left: 1rem;
+}
+
+header nav button {
+	background-color: #f44336; /* Color rojo */
+	/* border: none; */
+	color: white;
+	font-weight: bold;
+	padding: 0.4rem 0.8rem; /* Tamaño más pequeño */
+	font-size: 0.9rem;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+header nav button:hover {
+	background-color: #d32f2f; /* Oscurecer el rojo al pasar el mouse */
+}
+
+/* Forms */
+form {
+	margin: 1rem auto;
+	max-width: 500px;
+	background: white;
+	padding: 1rem 2rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+
+form input,
+form select,
+form button {
+	width: 100%;
+	margin-bottom: 1rem;
+	padding: 0.8rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+}
+
+form button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+form button:hover {
+	background-color: #45a049;
+}
+
+form .btn-secondary {
+	background-color: #f44336;
+	color: white;
+}
+
+form .btn-secondary:hover {
+	background-color: #e31b0c;
+}
+
+/* Buttons for Edit and Delete */
+table .btn-edit,
+table .btn-secondary {
+	display: inline-block;
+	width: 100px; /* Mismo ancho */
+	padding: 0.5rem 0;
+	text-align: center;
+	font-size: 0.9rem;
+	border-radius: 4px;
+}
+
+.btn-edit {
+	background-color: #2196f3;
+	color: white;
+	text-decoration: none;
+}
+
+.btn-edit:hover {
+	background-color: #1976d2;
+}
+
+.btn-secondary {
+	/* background-color: #f44336; */
+	color: white;
+}
+
+.btn-secondary:hover {
+	background-color: #d32f2f;
+}
+
+/* Tables */
 table {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 20px;
+	margin: 2rem 0;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-th,
-td {
+table th,
+table td {
 	border: 1px solid #ddd;
-	padding: 8px;
-}
-
-th {
-	background-color: #f4f4f4;
-}
-td {
-	padding: 8px;
+	padding: 1rem;
 	text-align: left;
 }
-.green {
-	color: green;
-}
-.red {
-	color: red;
-}
-.positivo {
-	color: green;
-}
 
-.negativo {
-	color: red;
-}
-
-.login-container {
-	max-width: 400px;
-	margin: 100px auto;
-	padding: 20px;
-	background: #fff;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	text-align: center;
-}
-h1 {
-	color: #333;
-	margin-bottom: 20px;
-}
-.login-form label {
-	display: block;
-	text-align: left;
-	font-weight: bold;
-	margin: 10px 0 5px;
-	color: #555;
-}
-
-.login-form input {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 15px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 16px;
-}
-
-/* Botón principal */
-.btn-primary {
-	width: 100%;
-	padding: 10px;
-	background-color: #007bff;
-	border: none;
+table th {
+	background-color: #4caf50;
 	color: white;
-	font-size: 16px;
-	border-radius: 4px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-	background-color: #0056b3;
-}
-
-/* Mensajes de error */
-.error-messages p {
-	color: red;
 	font-weight: bold;
-	margin: 0 0 10px;
 }
-body {
-	margin: 0;
-	padding: 0;
-	font-family: Arial, sans-serif;
-	background-color: #f4f4f9;
+
+table tr:hover {
+	background-color: #f2f2f2;
+}
+
+/* Inicio Styles (Precio del Dólar y Caja) */
+.inicio-container {
+	display: flex;
+	justify-content: space-between; /* Espacio entre los elementos */
+	align-items: flex-start; /* Alineación superior */
+	padding: 1rem;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inicio-section {
+	width: 45%; /* Cada sección ocupa el 45% */
+	padding: 1rem;
+	background: #f4f4f9;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inicio-section h3 {
 	color: #333;
+	margin-bottom: 1rem;
 }
 
-a {
-	text-decoration: none;
-	color: inherit;
+.inicio-section p {
+	font-size: 1rem;
+	line-height: 1.5;
+}
+.logout-button {
+	margin-right: 1rem; /* Separación del borde derecho */
 }
 
-/* Navbar Styles */
+.logout-button {
+	margin-left: auto; /* Empuja el botón a la derecha */
+}
+
 .navbar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1rem 2rem;
-	background-color: #4caf50; /* Green */
-	color: white;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-brand a {
-	font-size: 1.5rem;
-	font-weight: bold;
-	color: white;
-}
-
-.navbar-links {
-	display: flex;
-	gap: 1.5rem;
-	align-items: center;
-}
-
-.navbar-links a {
-	color: white;
-	font-size: 1rem;
-	transition: color 0.3s;
-}
-
-.navbar-links a:hover {
-	color: #c7ffc8; /* Lighter green */
-}
-
-.logout-form {
-	display: inline;
-}
-
-.btn-secondary {
-	background-color: #ff5722; /* Orange */
-	color: white;
-	border: none;
+	background-color: #4caf50; /* Fondo verde */
 	padding: 0.5rem 1rem;
-	font-size: 1rem;
-	cursor: pointer;
-	border-radius: 4px;
-	transition: all 0.3s ease;
 }
 
-.btn-secondary:hover {
-	background-color: #e64a19; /* Darker orange */
-}
-
-/* Main Content */
-.content {
-	margin: 2rem auto;
-	padding: 1rem;
-	width: 90%;
-	max-width: 800px;
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	text-align: center;
-}
-
-/* Buttons inside Content (optional) */
-.content a,
-.content button {
-	margin: 0.5rem;
-	padding: 0.8rem 1.5rem;
-	background-color: #4caf50;
+/* Enlaces de navegación */
+.nav-links a {
 	color: white;
 	text-decoration: none;
-	border-radius: 4px;
-	transition: all 0.3s ease;
+	margin-right: 1rem;
 	font-size: 1rem;
 }
 
-.content a:hover,
-.content button:hover {
-	background-color: #3e8e41;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.form-container {
-	margin: 2rem auto;
-	padding: 1.5rem;
-	width: 90%;
-	max-width: 600px;
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Estilo del botón */
+.logout-button button {
+	all: unset; /* Elimina todos los estilos predeterminados */
+	background-color: #f44336; /* Fondo rojo */
+	color: white;
+	padding: 0.4rem 0.8rem; /* Tamaño más pequeño */
+	font-size: 0.9rem; /* Texto más pequeño */
+	font-weight: bold;
+	border-radius: 4px; /* Bordes redondeados */
+	cursor: pointer;
+	box-shadow: none; /* Elimina sombras */
 }
 
-.form-container h2 {
-	text-align: center;
-	margin-bottom: 1rem;
-	color: #333;
+/* Hover para el botón */
+.logout-button button:hover {
+	background-color: #d32f2f; /* Más oscuro al pasar el mouse */
+}
+.logout-button form button {
+	background-color: #f44336; /* Botón rojo */
+	border: none;
+	color: white;
+	font-weight: bold;
+	padding: 0.5rem 1rem;
+	font-size: 0.9rem;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
-/* Grid structure for form inputs */
-.form-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
+.logout-button form button:hover {
+	background-color: #d32f2f; /* Oscurecer rojo en hover */
+}
+/* Contenedor de los botones */
+.actions-container {
+	display: flex;
+	gap: 0.5rem; /* Espaciado entre los botones */
+	justify-content: center; /* Centrar los botones dentro del contenedor */
 	align-items: center;
 }
 
-.form-grid label {
-	text-align: right;
-	font-weight: bold;
+/* Contenedor de los botones */
+.actions-container {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
 }
 
-.form-grid input,
-.form-grid select {
-	width: 100%;
-	padding: 0.5rem;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-/* Styling for the action buttons */
-.form-actions {
-	text-align: center;
-	margin-top: 1rem;
-}
-
-.btn-primary {
-	background-color: #4caf50;
+/* Botón Estilo General */
+.actions-container button,
+.actions-container a {
+	all: unset; /* Elimina todos los estilos predeterminados del navegador */
+	background-color: #f44336; /* Rojo para eliminar */
 	color: white;
-	padding: 0.8rem 1.5rem;
-	border: none;
+	padding: 0.5rem 1rem;
+	font-size: 0.9rem;
+	font-weight: bold;
 	border-radius: 4px;
+	text-align: center;
+	width: 100px; /* Ambos botones tendrán el mismo ancho */
 	cursor: pointer;
-	font-size: 1rem;
-	transition: background-color 0.3s ease;
+	display: inline-block;
+	text-decoration: none; /* Evita subrayado en los enlaces */
+	box-shadow: none; /* Elimina cualquier sombra */
+	outline: none; /* Elimina los contornos */
+	border: none; /* Elimina los bordes */
 }
 
-.btn-primary:hover {
-	background-color: #3e8e41;
+/* Hover para botón Eliminar */
+.actions-container button:hover {
+	background-color: #d32f2f;
+}
+
+/* Botón Editar */
+.actions-container a {
+	background-color: #007bff; /* Azul para editar */
+}
+
+.actions-container a:hover {
+	background-color: #0056b3;
 }

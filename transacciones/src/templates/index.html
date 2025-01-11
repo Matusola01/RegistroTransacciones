@@ -1,27 +1,14 @@
-<!-- templates/base.html -->
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-		<title>{% block title %}Transacciones{% endblock %}</title>
-	</head>
-	<body>
-		<nav class="navbar">
-			<div class="navbar-brand">
-				<a href="{{ url_for('home') }}">Transacciones</a>
-			</div>
-			<div class="navbar-links">
-				<a href="{{ url_for('registrar') }}">Registrar Transacción</a> |
-				<a href="{{ url_for('historial') }}">Historial</a>
-				<a href="{{ url_for('balance') }}">Balance</a>
-				<a href="{{ url_for('home') }}">Inicio</a>
-				<form action="{{ url_for('logout') }}" method="POST" style="display: inline">
-					<button type="submit" class="btn-secondary">Salir</button>
-				</form>
-			</div>
-		</nav>
-		<div class="content">{% block content %}{% endblock %}</div>
-	</body>
-</html>
+{% extends "base.html" %} {% block content %}
+<div class="inicio-container">
+	<div class="inicio-section">
+		<h3>Precio del Dólar Blue</h3>
+		<p><strong>Compra:</strong> {{ dollar_prices['buy'] if dollar_prices else "No disponible" }}</p>
+		<p><strong>Venta:</strong> {{ dollar_prices['sell'] if dollar_prices else "No disponible" }}</p>
+	</div>
+	<div class="inicio-section">
+		<h3>Caja Actual</h3>
+		<p><strong>Pesos:</strong> {{ cajas.pesos if cajas else 0 }}</p>
+		<p><strong>Dólares:</strong> {{ cajas.dolares if cajas else 0 }}</p>
+	</div>
+</div>
+{% endblock %}

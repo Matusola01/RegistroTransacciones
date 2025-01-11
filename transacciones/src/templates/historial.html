@@ -1,34 +1,56 @@
-<!-- templates/historial.html -->
-{% extends 'index.html' %} {% block title %}Historial{% endblock %} {% block content %}
-<h1>Historial de Transacciones</h1>
-<form method="GET">
-	<label for="filtro">Filtrar por Divisa:</label>
-	<input type="text" id="filtro" name="filtro" />
-	<button type="submit">Filtrar</button>
-</form>
+{% extends "base.html" %}
 
-<table>
-	<thead>
-		<tr>
-			<th>Nombre</th>
-			<th>Compra</th>
-			<th>Venta</th>
-			<th>Divisa</th>
-			<th>Fecha</th>
-			<th>Moneda</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for transaccion in transacciones %}
-		<tr>
-			<td>{{ transaccion.nombre_comprador }}</td>
-			<td>{{ transaccion.precio_compra }}</td>
-			<td>{{ transaccion.precio_venta }}</td>
-			<td>{{ transaccion.divisa }}</td>
-			<td>{{ transaccion.fecha }}</td>
-			<td>{{ transaccion.moneda }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+{% block content %}
+<div class="container">
+    <h1>Historial de Transacciones</h1>
+
+    <!-- Filtros -->
+    <form method="GET" class="form-container">
+        <label for="type">Tipo:</label>
+        <select id="type" name="type">
+            <option value="" {% if not tipo_filtro %}selected{% endif %}>Todos</option>
+            <option value="compra" {% if tipo_filtro == 'compra' %}selected{% endif %}>Compra</option>
+            <option value="venta" {% if tipo_filtro == 'venta' %}selected{% endif %}>Venta</option>
+        </select>
+
+        <label for="concept">Concepto:</label>
+        <input type="text" id="concept" name="concept" value="{{ concepto_filtro or '' }}" />
+        <input type="date" name="start_date" placeholder="Fecha de transacción">
+        <button type="submit" class="btn-primary">Filtrar</button>
+        <a href="{{ url_for('historial') }}" class="btn-secondary">Limpiar</a>
+    </form>
+
+    <!-- Tabla de Transacciones -->
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Tipo de Cambio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transacciones %}
+            <tr>
+                <td>{{ transaction.fecha_hora.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ transaction.tipo }}</td>
+                <td>{{ transaction.concepto }}</td>
+                <td>{{ transaction.monto }}</td>
+                <td>{{ transaction.tasa_cambio }}</td>
+                <td>
+                    <div class="actions-container">
+                        <form method="POST" action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}">
+                            <button type="submit" onclick="return confirm('¿Eliminar esta transacción?')">Eliminar</button>
+                        </form>
+                        <a href="{{ url_for('edit_transaction', transaction_id=transaction.id) }}">Editar</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
