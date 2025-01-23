@@ -2,13 +2,13 @@
 <div class="inicio-container">
 	<div class="inicio-section">
 		<h3>Precio del Dólar Blue</h3>
-		<p><strong>Compra:</strong> {{ dollar_prices['buy'] if dollar_prices else "No disponible" }}</p>
-		<p><strong>Venta:</strong> {{ dollar_prices['sell'] if dollar_prices else "No disponible" }}</p>
+		<p><strong>Compra:</strong> {{ dollar_prices['buy']|format_currency if dollar_prices else "No disponible" }}</p>
+		<p><strong>Venta:</strong> {{ dollar_prices['sell']|format_currency if dollar_prices else "No disponible" }}</p>
 	</div>
 	<div class="inicio-section">
 		<h3>Caja Actual</h3>
-		<p><strong>Pesos:</strong> {{ cajas.pesos if cajas else 0 }}</p>
-		<p><strong>Dólares:</strong> {{ cajas.dolares if cajas else 0 }}</p>
+		<p><strong>Pesos:</strong> {{ cajas.pesos|format_currency if cajas else 0 }}</p>
+		<p><strong>Dólares:</strong> {{ cajas.dolares|format_currency if cajas else 0 }}</p>
 	</div>
 </div>
 {% endblock %}

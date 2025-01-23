@@ -16,3 +16,7 @@ class Transaction(db.Model):
     concepto = db.Column(db.String(255), nullable=True)
     fecha_hora = db.Column(db.DateTime, nullable=False)
     tasa_cambio = db.Column(db.Float, nullable=False)  # Tipo de cambio
+    comision = db.Column(db.Float, nullable=True, default=0.0)  # Porcentaje de comisión (para cable)
+    descuento_cheque = db.Column(db.Float, nullable=True, default=0.0)  # Porcentaje de descuento (para cheques) 
+    precio_compra = db.Column(db.Float, nullable=True)  # Precio al que se compró (opcional)
+    precio_venta = db.Column(db.Float, nullable=True)  # Precio al que se vendió (opcional)  

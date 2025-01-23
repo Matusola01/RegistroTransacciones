@@ -2,36 +2,84 @@
 
 {% block content %}
 <div class="container">
-	<h1>Editar Transacción</h1>
-	{% with messages = get_flashed_messages(with_categories=true) %}
-	{% if messages %}
-	<div class="messages">
-		{% for category, message in messages %}
-		<p class="{{ category }}">{{ message }}</p>
-		{% endfor %}
-	</div>
-	{% endif %}
-	{% endwith %}
+    <h1>Editar Transacción</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="messages">
+        {% for category, message in messages %}
+        <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
 
-	<form method="POST" class="edit-transaction-form">
-		<label for="type">Tipo:</label>
-		<select id="type" name="type">
-			<option value="compra" {% if transaction.tipo == 'compra' %}selected{% endif %}>Compra</option>
-			<option value="venta" {% if transaction.tipo == 'venta' %}selected{% endif %}>Venta</option>
-		</select>
+    <form method="POST" class="edit-transaction-form">
+        <label for="type">Tipo:</label>
+        <select id="type" name="type" onchange="updateForm()" required>
+            <option value="compra_dolares" {% if transaction.tipo == 'compra_dolares' %}selected{% endif %}>Compra de Dólares</option>
+            <option value="venta_dolares" {% if transaction.tipo == 'venta_dolares' %}selected{% endif %}>Venta de Dólares</option>
+            <option value="compra_pesos" {% if transaction.tipo == 'compra_pesos' %}selected{% endif %}>Compra de Pesos</option>
+            <option value="venta_pesos" {% if transaction.tipo == 'venta_pesos' %}selected{% endif %}>Venta de Pesos</option>
+            <option value="cable_subida" {% if transaction.tipo == 'cable_subida' %}selected{% endif %}>Subida por Cable</option>
+            <option value="cable_bajada" {% if transaction.tipo == 'cable_bajada' %}selected{% endif %}>Bajada por Cable</option>
+            <option value="descuento_cheque" {% if transaction.tipo == 'descuento_cheque' %}selected{% endif %}>Descuento por Cheque</option>
+        </select>
 
-		<label for="concept">Concepto:</label>
-		<input type="text" id="concept" name="concept" value="{{ transaction.concepto }}" required />
+        <label for="concept">Concepto:</label>
+        <input type="text" id="concept" name="concept" value="{{ transaction.concepto }}" required />
 
-		<label for="amount">Monto:</label>
-		<input type="number" id="amount" name="amount" value="{{ transaction.monto }}" step="0.01" required />
+        <label for="amount" id="amountLabel">Monto:</label>
+        <input type="number" id="amount" name="amount" value="{{ transaction.monto }}" step="0.01" required />
 
-		<label for="exchange_rate">Tipo de Cambio:</label>
-		<input type="number" id="exchange_rate" name="exchange_rate" value="{{ transaction.tasa_cambio }}" step="0.01" required />
+        <div id="precioCompraWrapper" style="display: none">
+            <label for="precio_compra">Precio de Compra:</label>
+            <input type="number" id="precio_compra" name="precio_compra" step="0.01" />
+        </div>
 
-		<button type="submit" class="btn-primary">Guardar Cambios</button>
-		<a href="{{ url_for('transactions') }}" class="btn-secondary">Cancelar</a>
-	</form>
+        <div id="precioVentaWrapper" style="display: none">
+            <label for="precio_venta">Precio de Venta:</label>
+            <input type="number" id="precio_venta" name="precio_venta" step="0.01" />
+        </div>
+
+        <div id="comisionField" style="display: none">
+            <label for="comision">Comisión (%):</label>
+            <input type="number" id="comision" name="comision" step="0.01" value="{{ transaction.comision or 0 }}" />
+        </div>
+
+        <div id="descuentoField" style="display: none">
+            <label for="descuento_cheque">Descuento por Cheque (%):</label>
+            <input type="number" id="descuento_cheque" name="descuento_cheque" step="0.01" value="{{ transaction.descuento_cheque or 0 }}" />
+        </div>
+
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+        <a href="{{ url_for('transactions') }}" class="btn-secondary">Cancelar</a>
+    </form>
 </div>
-{% endblock %}
 
+<script>
+    function updateForm() {
+        const tipo = document.getElementById('type').value;
+        const precioCompraWrapper = document.getElementById('precioCompraWrapper');
+        const precioVentaWrapper = document.getElementById('precioVentaWrapper');
+        const comisionField = document.getElementById('comisionField');
+        const descuentoField = document.getElementById('descuentoField');
+
+        precioCompraWrapper.style.display = 'none';
+        precioVentaWrapper.style.display = 'none';
+        comisionField.style.display = 'none';
+        descuentoField.style.display = 'none';
+
+        if (tipo === 'compra_dolares' || tipo === 'compra_pesos') {
+            precioCompraWrapper.style.display = 'block';
+        } else if (tipo === 'venta_dolares' || tipo === 'venta_pesos') {
+            precioVentaWrapper.style.display = 'block';
+        } else if (tipo === 'cable_subida' || tipo === 'cable_bajada') {
+            comisionField.style.display = 'block';
+        } else if (tipo === 'descuento_cheque') {
+            descuentoField.style.display = 'block';
+        }
+    }
+
+    updateForm();
+</script>
+{% endblock %}

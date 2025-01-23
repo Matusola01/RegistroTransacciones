@@ -9,13 +9,24 @@
         <label for="type">Tipo:</label>
         <select id="type" name="type">
             <option value="" {% if not tipo_filtro %}selected{% endif %}>Todos</option>
-            <option value="compra" {% if tipo_filtro == 'compra' %}selected{% endif %}>Compra</option>
-            <option value="venta" {% if tipo_filtro == 'venta' %}selected{% endif %}>Venta</option>
+            <option value="compra_dolares" {% if tipo_filtro == 'compra_dolares' %}selected{% endif %}>Compra Dólares</option>
+            <option value="venta_dolares" {% if tipo_filtro == 'venta_dolares' %}selected{% endif %}>Venta Dólares</option>
+            <option value="compra_pesos" {% if tipo_filtro == 'compra_pesos' %}selected{% endif %}>Compra Pesos</option>
+            <option value="venta_pesos" {% if tipo_filtro == 'venta_pesos' %}selected{% endif %}>Venta Pesos</option>
+            <option value="cable_subida" {% if tipo_filtro == 'cable_subida' %}selected{% endif %}>Subida por Cable</option>
+            <option value="cable_bajada" {% if tipo_filtro == 'cable_bajada' %}selected{% endif %}>Bajada por Cable</option>
+            <option value="descuento_cheque" {% if tipo_filtro == 'descuento_cheque' %}selected{% endif %}>Descuento por Cheque</option>
         </select>
 
         <label for="concept">Concepto:</label>
         <input type="text" id="concept" name="concept" value="{{ concepto_filtro or '' }}" />
-        <input type="date" name="start_date" placeholder="Fecha de transacción">
+
+        <label for="start_date">Fecha de Inicio:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ fecha_inicio_filtro or '' }}" />
+
+        <label for="end_date">Fecha de Fin:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ fecha_fin_filtro or '' }}" />
+
         <button type="submit" class="btn-primary">Filtrar</button>
         <a href="{{ url_for('historial') }}" class="btn-secondary">Limpiar</a>
     </form>
@@ -29,6 +40,8 @@
                 <th>Concepto</th>
                 <th>Monto</th>
                 <th>Tipo de Cambio</th>
+                <th>Comisión</th>
+                <th>Descuento</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -38,8 +51,22 @@
                 <td>{{ transaction.fecha_hora.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td>{{ transaction.tipo }}</td>
                 <td>{{ transaction.concepto }}</td>
-                <td>{{ transaction.monto }}</td>
+                <td>${{ '%.2f'|format(transaction.monto) }}</td>
                 <td>{{ transaction.tasa_cambio }}</td>
+                <td>
+                    {% if transaction.comision %}
+                    {{ '%.2f'|format(transaction.comision * 100) }}%
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if transaction.descuento_cheque %}
+                    {{ '%.2f'|format(transaction.descuento_cheque * 100) }}%
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
                 <td>
                     <div class="actions-container">
                         <form method="POST" action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}">

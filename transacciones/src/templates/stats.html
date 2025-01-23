@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Estadísticas Detalladas</h2>
+
+<!-- Filtros de rango de tiempo -->
+<div class="filters">
+    <form method="GET" class="form-container">
+        <label for="range">Rango de tiempo:</label>
+        <select id="range" name="range">
+            <option value="daily" {% if rango == 'daily' %}selected{% endif %}>Diarias</option>
+            <option value="weekly" {% if rango == 'weekly' %}selected{% endif %}>Semanales</option>
+            <option value="monthly" {% if rango == 'monthly' %}selected{% endif %}>Mensuales</option>
+            <option value="yearly" {% if rango == 'yearly' %}selected{% endif %}>Anuales</option>
+        </select>
+        <button type="submit" class="btn-primary">Filtrar</button>
+    </form>
+</div>
+
+<!-- Tabla de estadísticas -->
+<div class="stats-container">
+    <table class="stats-table">
+        <thead>
+            <tr>
+                <th>Estadística</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Total Dólares Vendidos</td>
+                <td>{{ estadisticas.total_dolares_vendidos | format_currency }}</td>
+            </tr>
+            <tr>
+                <td>Total Pesos Vendidos (en USD)</td>
+                <td>{{ estadisticas.total_pesos_vendidos | format_currency }}</td>
+            </tr>
+            <tr>
+                <td>Total Ganancias</td>
+                <td>{{ estadisticas.total_ganancias | format_currency }}</td>
+            </tr>
+            <tr>
+                <td>Total Pérdidas</td>
+                <td>{{ estadisticas.total_perdidas | format_currency }}</td>
+            </tr>
+            <tr>
+                <td>Total Comisiones</td>
+                <td>{{ estadisticas.total_comisiones | format_currency }}</td>
+            </tr>
+            <tr>
+                <td>Total Descuentos por Cheques (en Pesos)</td>
+                <td>{{ estadisticas.total_descuentos_cheques | format_currency }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .filters {
+        margin: 20px 0;
+    }
+
+    .stats-container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .stats-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .stats-table th,
+    .stats-table td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .stats-table th {
+        background-color: #f1f1f1;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

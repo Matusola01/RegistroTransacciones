@@ -3,24 +3,38 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Flask Caja Dólares</title>
+		<title>PGA Valores - Gestión de transacciones</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 	</head>
 	<body>
 		<header>
-			<h1>Gestión de Caja - Compra/Venta de Dólares</h1>
-			<div class="actions-container">
-				<form method="POST" action="{{ url_for('logout') }}">
-					<button type="submit">Cerrar Sesión</button>
-				</form>
+			<div>
+				<img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" />
+				<div class="actions-container">
+					<form method="POST" action="{{ url_for('logout') }}">
+						<button type="submit">Cerrar Sesión</button>
+					</form>
+				</div>
 			</div>
 			<nav>
 				<a href="{{ url_for('index') }}">Inicio</a>
 				<a href="{{ url_for('transactions') }}">Transacciones</a>
-				<a href="{{ url_for('chart') }}">Gráfica</a>
+				<a href="{{ url_for('stats') }}">Estadísticas</a>
 				<a href="{{ url_for('historial') }}">Historial</a>
+				<a href="{{url_for('manage_caja')}}">Caja</a>
 			</nav>
 		</header>
-		<main>{% block content %}{% endblock %}</main>
+		<main>
+			<!-- Mensajes Flash -->
+			{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+			<div class="flash-messages">
+				{% for category, message in messages %}
+				<div class="alert alert-{{ category }}">{{ message }}</div>
+				{% endfor %}
+			</div>
+			{% endif %} {% endwith %}
+			<!-- Contenido dinámico -->
+			{% block content %}{% endblock %}
+		</main>
 	</body>
 </html>

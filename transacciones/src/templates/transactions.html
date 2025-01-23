@@ -2,32 +2,56 @@
 <div class="container">
 	<h2>Registrar Transacción</h2>
 	<form method="POST" action="{{ url_for('transactions') }}" class="form-container">
-		<label for="tipo">Tipo:</label>
+		<label for="tipo">Tipo de Transacción:</label>
 		<select name="tipo" id="tipo" onchange="updateForm()" required>
-			<option value="compra">Compra</option>
-			<option value="venta">Venta</option>
+			<option value="compra_dolares">Compra de Dólares</option>
+			<option value="venta_dolares">Venta de Dólares</option>
+			<option value="compra_pesos">Compra de Pesos</option>
+			<option value="venta_pesos">Venta de Pesos</option>
+			<option value="cable_subida">Subida por Cable</option>
+			<option value="cable_bajada">Bajada por Cable</option>
+			<option value="descuento_cheque">Descuento por Cheque</option>
+			<option value="cash_to_cash">Cash to Cash</option>
 		</select>
 
-		<label for="monto" id="montoLabel">Monto en Pesos:</label>
+		<label for="monto" id="montoLabel">Monto:</label>
 		<input type="number" name="monto" id="monto" step="0.01" required />
 
 		<label for="concepto">Concepto:</label>
-		<input type="text" name="concepto" required />
+		<input type="text" name="concepto" placeholder="Descripción de la transacción" required />
 
-		<label for="calculo">Calcular usando:</label>
-		<select name="calculo" id="calculo" onchange="toggleCustomFields()" required>
-			<option value="dolar_blue">Dólar Blue</option>
-			<option value="valores_personalizados">Valores Personalizados</option>
-		</select>
-
-		<div id="customFields" style="display: none">
-			<label for="precio_compra">Precio de Compra (Personalizado):</label>
-			<input type="number" name="precio_compra" step="0.01" id="precio_compra" />
-
-			<label for="precio_venta">Precio de Venta (Personalizado):</label>
-			<input type="number" name="precio_venta" step="0.01" id="precio_venta" />
+		<!-- Campo para Comisión -->
+		<div id="comisionField" style="display: none">
+			<label for="comision">Porcentaje de Comisión (Cable):</label>
+			<input type="number" name="comision" id="comision" step="0.01" placeholder="Ejemplo: 5" />
 		</div>
 
+		<!-- Campo para Descuento -->
+		<div id="descuentoField" style="display: none">
+			<label for="descuento_cheque">Porcentaje de Descuento (Cheque):</label>
+			<input type="number" name="descuento_cheque" id="descuento_cheque" step="0.01" placeholder="Ejemplo: 2" />
+		</div>
+
+		<!-- Campos para Precio de Compra y Venta -->
+		<div id="customFields">
+			<div id="precioCompraWrapper" style="display: none">
+				<label for="precio_compra">Precio de Compra:</label>
+				<input type="number" name="precio_compra" id="precio_compra" step="0.01" />
+			</div>
+
+			<div id="precioVentaWrapper" style="display: none">
+				<label for="precio_venta">Precio de Venta:</label>
+				<input type="number" name="precio_venta" id="precio_venta" step="0.01" />
+			</div>
+		</div>
+		<!-- Campo para especificar si paga o recibe comisión -->
+		<div id="cashToCashField" style="display: none">
+			<label for="comision_tipo">Tipo de Comisión:</label>
+			<select name="comision_tipo" id="comision_tipo" required>
+				<option value="pagar">Pagar Comisión</option>
+				<option value="recibir">Recibir Comisión</option>
+			</select>
+		</div>
 		<button type="submit" class="btn-primary">Registrar</button>
 	</form>
 </div>
@@ -36,29 +60,51 @@
 	function updateForm() {
 		const tipo = document.getElementById('tipo').value;
 		const montoLabel = document.getElementById('montoLabel');
-		const montoInput = document.getElementById('monto');
+		const comisionField = document.getElementById('comisionField');
+		const cashToCashField = document.getElementById('cashToCashField');
+		const descuentoField = document.getElementById('descuentoField');
+		const precioCompraWrapper = document.getElementById('precioCompraWrapper');
+		const precioVentaWrapper = document.getElementById('precioVentaWrapper');
 
-		if (tipo === 'compra') {
-			montoLabel.textContent = 'Monto en Pesos:';
-			montoInput.placeholder = 'Ingrese el monto en pesos';
-		} else if (tipo === 'venta') {
-			montoLabel.textContent = 'Monto en Dólares:';
-			montoInput.placeholder = 'Ingrese el monto en dólares';
+		// Reset visibility and required state
+		comisionField.style.display = 'none';
+		cashToCashField.style.display = 'none';
+		descuentoField.style.display = 'none';
+		precioCompraWrapper.style.display = 'none';
+		precioVentaWrapper.style.display = 'none';
+
+		switch (tipo) {
+			case 'compra_dolares':
+			case 'compra_pesos':
+				montoLabel.textContent = 'Monto (en Dólares):';
+				precioCompraWrapper.style.display = 'block';
+				break;
+			case 'venta_dolares':
+			case 'venta_pesos':
+				montoLabel.textContent = 'Monto (en Dólares):';
+				precioVentaWrapper.style.display = 'block';
+				break;
+			case 'cable_subida':
+			case 'cable_bajada':
+				montoLabel.textContent = 'Monto (en Dólares):';
+				comisionField.style.display = 'block';
+				break;
+			case 'cash_to_cash':
+				montoLabel.textContent = 'Monto (en Dólares):';
+				cashToCashField.style.display = 'block';
+				comisionField.style.display = 'block';
+				break;
+			case 'descuento_cheque':
+				montoLabel.textContent = 'Monto (en Pesos):';
+				descuentoField.style.display = 'block';
+				break;
+			default:
+				montoLabel.textContent = 'Monto:';
 		}
 	}
 
-	function toggleCustomFields() {
-		const calculo = document.getElementById('calculo').value;
-		const customFields = document.getElementById('customFields');
-
-		if (calculo === 'valores_personalizados') {
-			customFields.style.display = 'block';
-		} else {
-			customFields.style.display = 'none';
-		}
-	}
-
+	// Initialize form
 	updateForm();
-	toggleCustomFields();
 </script>
+
 {% endblock %}

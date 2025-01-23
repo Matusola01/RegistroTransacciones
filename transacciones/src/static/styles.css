@@ -11,7 +11,7 @@ h1,
 h2,
 h3 {
 	text-align: center;
-	color: #4caf50;
+	color: #000000;
 	margin-top: 1rem;
 }
 
@@ -301,4 +301,44 @@ table tr:hover {
 
 .actions-container a:hover {
 	background-color: #0056b3;
+}
+.flash-messages {
+	margin: 20px auto;
+	padding: 10px;
+	width: 90%;
+	max-width: 800px;
+}
+
+.alert {
+	padding: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	color: white;
+	font-weight: bold;
+}
+
+.alert-success {
+	background-color: #4caf50; /* Verde para éxito */
+}
+
+.alert-error {
+	background-color: #f44336; /* Rojo para errores */
+}
+
+.alert-warning {
+	background-color: #ff9800; /* Naranja para advertencias */
+}
+
+.alert-info {
+	background-color: #2196f3; /* Azul para información */
+}
+.header-container {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.logo {
+	width: 150px;
+	height: 150px;
 }
