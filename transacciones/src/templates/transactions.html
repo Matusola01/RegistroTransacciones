@@ -29,7 +29,15 @@
 		<!-- Campo para Descuento -->
 		<div id="descuentoField" style="display: none">
 			<label for="descuento_cheque">Porcentaje de Descuento (Cheque):</label>
-			<input type="number" name="descuento_cheque" id="descuento_cheque" step="0.01" placeholder="Ejemplo: 2" />
+			<input
+				type="number"
+				name="descuento_cheque"
+				id="descuento_cheque"
+				step="0.01"
+				placeholder="Ejemplo: 1 para 1%"
+				min="0"
+				max="100"
+			/>
 		</div>
 
 		<!-- Campos para Precio de Compra y Venta -->

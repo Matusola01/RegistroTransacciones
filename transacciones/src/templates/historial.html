@@ -55,14 +55,14 @@
                 <td>{{ transaction.tasa_cambio }}</td>
                 <td>
                     {% if transaction.comision %}
-                    {{ '%.2f'|format(transaction.comision * 100) }}%
+                    {{ '%.2f'|format(transaction.comision) }}%
                     {% else %}
                     N/A
                     {% endif %}
                 </td>
                 <td>
                     {% if transaction.descuento_cheque %}
-                    {{ '%.2f'|format(transaction.descuento_cheque * 100) }}%
+                    ${{ '%.2f'|format(transaction.descuento_cheque) }}
                     {% else %}
                     N/A
                     {% endif %}
