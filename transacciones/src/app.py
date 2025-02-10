@@ -229,6 +229,67 @@ def safe_decimal(value, default=Decimal(0)):
     except (ValueError, TypeError, InvalidOperation):
         return default
 
+# @app.route('/transactions', methods=['GET', 'POST'])
+# @login_required
+# def transactions():
+#     if request.method == 'POST':
+#         try:
+#             tipo = request.form.get('tipo')
+#             monto = safe_decimal(request.form.get('monto'))
+#             concepto = request.form.get('concepto', "").strip()
+#             comision = safe_decimal(request.form.get('comision')) / 100  # Convertimos correctamente a porcentaje
+#             descuento_cheque = safe_decimal(request.form.get('descuento_cheque'))
+#             precio_compra = safe_decimal(request.form.get('precio_compra'), Decimal(0))
+#             precio_venta = safe_decimal(request.form.get('precio_venta'), Decimal(0))
+#             fecha_hora = datetime.datetime.now()
+
+#             if monto <= 0:
+#                 flash("El monto debe ser mayor a cero.", "error")
+#                 return redirect(url_for('transactions'))
+
+#             caja = Caja.query.order_by(Caja.id.desc()).first()
+#             if not caja:
+#                 flash("Primero debes configurar la caja inicial.", "error")
+#                 return redirect(url_for('manage_caja'))
+
+#             caja_pesos = safe_decimal(caja.pesos)
+#             caja_dolares = safe_decimal(caja.dolares)
+
+#             # ✅ Pasamos el descuento_cheque a calcular_impacto
+#             pesos_delta, dolares_delta, comision_calculada, descuento_aplicado = calcular_impacto(
+#                 tipo, monto, precio_compra if tipo in ['compra_dolares', 'compra_pesos'] else precio_venta,
+#                 precio_compra, precio_venta, comision, descuento_cheque
+#             )
+
+#             if caja_pesos + pesos_delta < 0 or caja_dolares + dolares_delta < 0:
+#                 flash("Fondos insuficientes en la caja.", "error")
+#                 return redirect(url_for('transactions'))
+
+#             caja.pesos += float(pesos_delta)
+#             caja.dolares += float(dolares_delta)
+
+#             # ✅ Se guarda el monto final con el descuento aplicado
+#             transaccion = Transaction(
+#                 tipo=tipo,
+#                 monto=float(monto),  
+#                 concepto=concepto,
+#                 fecha_hora=fecha_hora,
+#                 tasa_cambio=float(precio_compra if tipo in ['compra_dolares', 'compra_pesos'] else precio_venta),
+#                 comision=float(comision_calculada),
+#                 descuento_cheque=float(descuento_aplicado)
+#             )
+#             db.session.add(transaccion)
+#             db.session.commit()
+#             flash("Transacción registrada correctamente.", "success")
+
+#         except Exception as e:
+#             db.session.rollback()
+#             flash(f"Error al registrar la transacción: {str(e)}", "error")
+
+#         return redirect(url_for('transactions'))
+    
+#     return render_template('transactions.html')
+
 @app.route('/transactions', methods=['GET', 'POST'])
 @login_required
 def transactions():
@@ -237,7 +298,7 @@ def transactions():
             tipo = request.form.get('tipo')
             monto = safe_decimal(request.form.get('monto'))
             concepto = request.form.get('concepto', "").strip()
-            comision = safe_decimal(request.form.get('comision')) / 100  # Convertimos correctamente a porcentaje
+            comision = safe_decimal(request.form.get('comision')) / 100  
             descuento_cheque = safe_decimal(request.form.get('descuento_cheque'))
             precio_compra = safe_decimal(request.form.get('precio_compra'), Decimal(0))
             precio_venta = safe_decimal(request.form.get('precio_venta'), Decimal(0))
@@ -254,11 +315,21 @@ def transactions():
 
             caja_pesos = safe_decimal(caja.pesos)
             caja_dolares = safe_decimal(caja.dolares)
+            
+            # 🔹 Obtener el precio de compra previo (si existe)
+            precio_compra_prev = obtener_precio_compra_previo(tipo)
+
+            if tipo in ['venta_dolares', 'venta_pesos']:
+                if precio_compra_prev <= 0:
+                    if precio_compra <= 0:
+                        flash("Debe ingresar un precio de compra válido, ya que no hay uno previo.", "error")
+                        return redirect(url_for('transactions'))
+                    precio_compra_prev = precio_compra  # Se usa el precio ingresado manualmente
 
             # ✅ Pasamos el descuento_cheque a calcular_impacto
             pesos_delta, dolares_delta, comision_calculada, descuento_aplicado = calcular_impacto(
                 tipo, monto, precio_compra if tipo in ['compra_dolares', 'compra_pesos'] else precio_venta,
-                precio_compra, precio_venta, comision, descuento_cheque
+                precio_compra_prev, precio_venta, comision, descuento_cheque
             )
 
             if caja_pesos + pesos_delta < 0 or caja_dolares + dolares_delta < 0:
@@ -289,6 +360,7 @@ def transactions():
         return redirect(url_for('transactions'))
     
     return render_template('transactions.html')
+
 
 
 @app.route('/transactions/delete/<int:transaction_id>', methods=['POST'])

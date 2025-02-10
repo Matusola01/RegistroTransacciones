@@ -73,8 +73,10 @@
 		const descuentoField = document.getElementById('descuentoField');
 		const precioCompraWrapper = document.getElementById('precioCompraWrapper');
 		const precioVentaWrapper = document.getElementById('precioVentaWrapper');
+		const precioCompra = document.getElementById('precio_compra');
+		const precioCompraPrev = '{{ precio_compra_prev | default(0) }}'; // Obtiene el precio de compra previo si existe
 
-		// Reset visibility and required state
+		// Reset visibility
 		comisionField.style.display = 'none';
 		cashToCashField.style.display = 'none';
 		descuentoField.style.display = 'none';
@@ -84,30 +86,28 @@
 		switch (tipo) {
 			case 'compra_dolares':
 			case 'compra_pesos':
-				montoLabel.textContent = 'Monto (en Dólares):';
 				precioCompraWrapper.style.display = 'block';
 				break;
 			case 'venta_dolares':
 			case 'venta_pesos':
-				montoLabel.textContent = 'Monto (en Dólares):';
 				precioVentaWrapper.style.display = 'block';
+
+				// ✅ Si no hay precio previo, pedir que el usuario lo ingrese
+				if (precioCompraPrev === 0) {
+					precioCompraWrapper.style.display = 'block';
+				}
 				break;
 			case 'cable_subida':
 			case 'cable_bajada':
-				montoLabel.textContent = 'Monto (en Dólares):';
 				comisionField.style.display = 'block';
 				break;
 			case 'cash_to_cash':
-				montoLabel.textContent = 'Monto (en Dólares):';
 				cashToCashField.style.display = 'block';
 				comisionField.style.display = 'block';
 				break;
 			case 'descuento_cheque':
-				montoLabel.textContent = 'Monto (en Pesos):';
 				descuentoField.style.display = 'block';
 				break;
-			default:
-				montoLabel.textContent = 'Monto:';
 		}
 	}
 
